@@ -7,18 +7,18 @@ task :gemspec => "version:read" do
     gem.homepage = "http://github.com/mislav/humanize"
     gem.authors = ["Jack Chen", "Ryan Bigg"]
     gem.has_rdoc = true
-    
+
     gem.version = GEM_VERSION
     gem.files = FileList['Rakefile', '{lib,spec}/**/*', 'README*'].reject do |file|
       File.directory?(file)
     end
     gem.executables = Dir['bin/*'].map { |f| File.basename(f) }
   end
-  
+
   spec_string = spec.to_ruby
-  
+
   begin
-    Thread.new { eval("$SAFE = 3\n#{spec_string}", binding) }.join 
+    Thread.new { eval("$SAFE = 3\n#{spec_string}", binding) }.join
   rescue
     abort "unsafe gemspec: #{$!}"
   else
@@ -63,14 +63,14 @@ namespace :version do
       GEM_VERSION = File.read("VERSION")
     end
   end
-  
+
   task :bump => :read do
     if ENV['VERSION']
       GEM_VERSION.replace ENV['VERSION']
     else
       GEM_VERSION.sub!(/\d+$/) { |num| num.to_i + 1 }
     end
-    
+
     File.open("VERSION", 'w') { |v| v.write GEM_VERSION }
   end
 end
