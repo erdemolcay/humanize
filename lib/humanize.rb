@@ -3,8 +3,12 @@ require "humanize/languages"
 
 module Humanize
 
-  def humanize
-    [int_to_words(self.to_i), language[:separator], int_to_words(self.decimal)].join
+  def humanize(with_decimal = true)
+    if with_decimal
+      [int_to_words(self.to_i), language[:separator], int_to_words(self.decimal)].join
+    else
+      int_to_words(self.to_i)
+    end
   end
 
   def decimal(rounding = default_rounding)
